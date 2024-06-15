@@ -1,7 +1,10 @@
 package application;
 
+import DB.DbConnect;
+
 public class Program {
 	public static void main(String [] args) {
-		System.out.println("Hello World!");
+		DbConnect.getConnection();
+		DbConnect.closeConnection();
 	}
 }
