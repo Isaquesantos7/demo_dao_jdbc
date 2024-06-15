@@ -71,8 +71,34 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public Seller findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = this.connection.prepareStatement(
+					"SELECT seller.id, seller.name, seller.email, seller.birthDate, " +  
+					"seller.baseSalary, seller.departmentId, department.name AS departmentName " + 
+					"FROM tb_seller AS seller " + 
+					"LEFT JOIN tb_department as department " +
+					"ON seller.departmentId = department.id " + 
+					"WHERE seller.id = ?"
+			);
+			
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				Department dep = instantiateDepartment(rs);
+				Seller obj = instantiateSeller(rs, dep);
+				return obj;
+			}
+			return null;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DbConnect.closeStatement(st);
+			DbConnect.closeResultSet(rs);
+		}
 	}
 
 	@Override

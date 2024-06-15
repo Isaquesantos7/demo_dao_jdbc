@@ -15,7 +15,7 @@ public class Program {
 	public static void main(String [] args) {
 		Locale.setDefault(Locale.US);
 		
-		DepartmentDao dep = DaoFactory.createDepartmentDao();
+		//DepartmentDao dep = DaoFactory.createDepartmentDao();
 		
 		//Department dep1 =  new Department(null, "Business");
 		//dep.insert(dep1);
@@ -28,19 +28,23 @@ public class Program {
 		//	System.out.println(d.toString());
 		//}
 		
-		Department dep0 = dep.findById(1);		
-		System.out.println(dep0.toString());
+		//Department dep0 = dep.findById(1);		
+		//System.out.println(dep0.toString());
 		
 		SellerDao seller = DaoFactory.createSellerDao();
 		
-		Seller seller0 = new Seller(null, "Isaque Santos Pinto", "isaquesantos.second.1998@gmail.com", new Date(), 2304.28, dep0);
-		seller.insert(seller0);
+		//Seller seller0 = new Seller(null, "Isaque Santos Pinto", "isaquesantos.second.1998@gmail.com", new Date(), 2304.28, dep0);
+		//seller.insert(seller0);
 		
-		List<Seller> listSeller = seller.findAll();
+		//List<Seller> listSeller = seller.findAll();
 		
-		for (Seller s: listSeller) {
-			System.out.println(s);
-		}
+		//for (Seller s: listSeller) {
+		//	System.out.println(s);
+		//}
+		
+		Seller seller0 = seller.findById(5);
+		
+		System.out.println(seller0);
 		
 		DbConnect.closeConnection();
 	}
