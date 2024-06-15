@@ -60,8 +60,18 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
-		
+		try {
+			st = this.connection.prepareStatement("DELETE FROM tb_department WHERE id = ?;", Statement.RETURN_GENERATED_KEYS);	
+			st.setInt(1, id);
+				
+			st.executeUpdate();
+			
+		} catch (SQLException e) {
+			
+			throw new DbException("Error: " + e.getMessage());
+		} finally {
+			DbConnect.closeStatement(st);
+		}
 	}
 
 	@Override

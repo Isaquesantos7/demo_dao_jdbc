@@ -12,8 +12,10 @@ public class Program {
 		
 		DepartmentDao dep = DaoFactory.createDepartmentDao();
 		
-		Department dep1 =  new Department(null, "RH");
-		dep.insert(dep1);
+		//Department dep1 =  new Department(null, "Business");
+		//dep.insert(dep1);
+		
+		//dep.deleteById(4);
 		
 		List<Department> depart = dep.findAll();
 		
@@ -21,9 +23,8 @@ public class Program {
 			System.out.println(d.toString());
 		}
 		
-		Department dep0 = dep.findById(1);
-		
-		System.out.println(dep0.toString());
+		//Department dep0 = dep.findById(1);		
+		//System.out.println(dep0.toString());
 		
 		DbConnect.closeConnection();
 	}
