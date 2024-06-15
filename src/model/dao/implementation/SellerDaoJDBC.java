@@ -1,6 +1,8 @@
 package model.dao.implementation;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import model.Department;
@@ -50,5 +52,26 @@ public class SellerDaoJDBC implements SellerDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@SuppressWarnings("unused")
+	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+		Seller seller = new Seller();
+		seller.setId(rs.getInt("d"));
+		seller.setName(rs.getString("name"));
+		seller.setEmail(rs.getString("email"));
+		seller.setBirthDate(rs.getDate("birthDate"));
+		seller.setBaseSalary(rs.getDouble("baseSalary"));
+		seller.setDepartment(dep);
+		
+		return seller;
+	}
+	
+	@SuppressWarnings("unused")
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		Department dep = new Department();
+		dep.setId(rs.getInt("departmentId"));
+		dep.setName(rs.getString("Departmentname"));
+		
+		return dep;
+	}
 }
