@@ -1,10 +1,21 @@
 package application;
 
-import DB.DbConnect;
+import java.util.List;
+
+import model.Department;
+import model.dao.DaoFactory;
+import model.dao.DepartmentDao;
 
 public class Program {
 	public static void main(String [] args) {
-		DbConnect.getConnection();
-		DbConnect.closeConnection();
+		
+		DepartmentDao dep = DaoFactory.createDepartmentDao();
+		
+		List<Department> depart = dep.findAll();
+		
+		for (Department d : depart) {
+			System.out.println(d.toString());
+		}
+	
 	}
 }
