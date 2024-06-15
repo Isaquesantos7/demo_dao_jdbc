@@ -4,10 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 import DB.DbConnect;
 import DB.DbException;
@@ -25,7 +26,34 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void insert(Seller obj) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		
+		try {
+			st = this.connection.prepareStatement("INSERT INTO tb_seller(name, email, birthDate, baseSalary, departmentId) VALUES(?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+			st.setString(1, obj.getName());
+			st.setString(2, obj.getEmail());
+			st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+			st.setDouble(4, obj.getBaseSalary());
+			st.setInt(5, obj.getDepartment().getId());
+			
+			int rowsAffect = st.executeUpdate();
+			
+			if (rowsAffect > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				
+				if (rs.next()) {
+					int id = rs.getInt(1);
+					obj.setId(id);
+				}				
+				DbConnect.closeResultSet(rs);
+			}
+			
+		} catch (SQLException e) {
+		
+			throw new DbException("Error: " +  e.getMessage());
+		} finally {
+			DbConnect.closeStatement(st);
+		}
 		
 	}
 
@@ -53,7 +81,7 @@ public class SellerDaoJDBC implements SellerDao {
 		ResultSet rs = null;
 		
 		try {
-			st = this.connection.prepareStatement("SELECT * FROM tb_seller AS seller LEFT JOIN tb_department dep ON seller.departmentId = dep.id ORDER BY seller.name;");
+			st = this.connection.prepareStatement("SELECT seller.id, seller.name, seller.email, seller.birthDate, seller.baseSalary, seller.departmentId, dep.name as departmentName FROM tb_seller AS seller LEFT JOIN tb_department dep ON seller.departmentId = dep.id ORDER BY seller.name;");
 			rs = st.executeQuery();
 			
 			List<Seller> listSeller = new ArrayList<Seller>();
@@ -88,7 +116,6 @@ public class SellerDaoJDBC implements SellerDao {
 		return null;
 	}
 	
-	@SuppressWarnings("unused")
 	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
 		Seller seller = new Seller();
 		seller.setId(rs.getInt("departmentId"));
@@ -101,11 +128,10 @@ public class SellerDaoJDBC implements SellerDao {
 		return seller;
 	}
 	
-	@SuppressWarnings("unused")
 	private Department instantiateDepartment(ResultSet rs) throws SQLException {
 		Department dep = new Department();
 		dep.setId(rs.getInt("departmentId"));
-		dep.setName(rs.getString("name"));
+		dep.setName(rs.getString("departmentName"));
 		
 		return dep;
 	}
