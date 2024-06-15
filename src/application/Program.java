@@ -10,12 +10,16 @@ public class Program {
 	public static void main(String [] args) {
 		
 		DepartmentDao dep = DaoFactory.createDepartmentDao();
-		
+/*		
 		List<Department> depart = dep.findAll();
 		
 		for (Department d : depart) {
 			System.out.println(d.toString());
 		}
+*/		
+		Department dep0 = dep.findById(1);
+		
+		System.out.println(dep0.toString());
 	
 	}
 }
